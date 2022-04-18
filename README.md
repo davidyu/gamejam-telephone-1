@@ -12,7 +12,8 @@
 3. In the dialog, navigate to the *parent folder* where this repository was cloned
 4. Click on the repository folder (game-jam-telephone-1) and choose 'Add project'
 5. Unity should now automatically open the project
-6. To run the game, click on the play button in the center top bar of the Unity editor
+6. Open up the Maze scene (Assets/Scenes/Maze.unity)
+7. To run the game, click on the play button in the center top bar of the Unity editor
 
 ## Tips
 - For code, it is advisable to focus on the top-level files in the Assets/Scripts folder, you may not have enough time to modify and/or debug the code in the Daedalus folder
