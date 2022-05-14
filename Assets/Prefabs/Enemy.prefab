@@ -77,6 +77,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75cef9278f8844841b2096a9caecd318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 5
+  oinkClip: {fileID: 8300000, guid: da37fd7fff13ad44aa4b9798a09ad407, type: 3}
+  squealClip: {fileID: 8300000, guid: 776e762a14db2b241b67d6064e1f1417, type: 3}
 --- !u!1 &3912778123409994605
 GameObject:
   m_ObjectHideFlags: 0

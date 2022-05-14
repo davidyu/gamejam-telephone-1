@@ -6,24 +6,31 @@ public class Bomb : MonoBehaviour
     public float explosionCountdown = 2.0f;
     public float explosionDuration = 0.2f;
     public float explosionRange = 1;
+    public AudioClip smallExplosionClip;
+    public AudioClip bigExplosionClip;
+    public AudioClip hugeExplosionClip;
     public LayerMask explosionMask;
     public GameObject explosion;
 
-    private float timeTillExplosion;
-
     void Start()
     {
-        timeTillExplosion = explosionCountdown;
-        Invoke("Explode", explosionCountdown);
-    }
-
-    void Update()
-    {
-        timeTillExplosion -= Time.deltaTime;
+        Invoke(nameof(Explode), explosionCountdown);
     }
 
     void Explode()
     {
+        if (explosionRange >= 3)
+        {
+            AudioSource.PlayClipAtPoint(hugeExplosionClip, transform.position);
+        }
+        else if (explosionRange >= 2)
+        {
+            AudioSource.PlayClipAtPoint(bigExplosionClip, transform.position);
+        }
+        else
+        {
+            AudioSource.PlayClipAtPoint(smallExplosionClip, transform.position);
+        }
         Instantiate(explosion, transform.position, Quaternion.identity); 
         StartCoroutine(ExplodeInDirection(Vector3.forward));
         StartCoroutine(ExplodeInDirection(Vector3.right));
@@ -32,7 +39,7 @@ public class Bomb : MonoBehaviour
         Destroy(gameObject, explosionDuration);
     }
 
-    IEnumerator ExplodeInDirection(Vector3 direction) 
+    IEnumerator ExplodeInDirection(Vector3 direction)
     {
         for (int i = 1; i <= explosionRange; i++) 
         {
@@ -48,7 +55,6 @@ public class Bomb : MonoBehaviour
             {
                 // this destroys whatever the explosions touch
                 Destroy(hit.collider.gameObject, explosionDuration/2);
-
                 break; 
             }
         }

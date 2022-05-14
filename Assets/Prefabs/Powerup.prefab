@@ -59,6 +59,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f4926574de63b14889fe55ce9fe1485, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  powerupClip: {fileID: 8300000, guid: eb96dce521916354e9220ee5a665dfdb, type: 3}
 --- !u!1 &8276238392680793196
 GameObject:
   m_ObjectHideFlags: 0

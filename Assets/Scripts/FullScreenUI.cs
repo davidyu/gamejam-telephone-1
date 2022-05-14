@@ -11,9 +11,11 @@ public class FullScreenUI : MonoBehaviour
     public float gameStartFadeDelay = 1f;
     public Texture2D gameOverScreen;
     public Texture2D gameWonScreen;
+    public AudioClip gameWonClip;
+    public AudioClip gameOverClip;
 
+    private AudioSource audioSource;
 	private Texture2D texture;
-
     private bool stretch = false;
     private bool fading = false;
     private float fadeValue = 0f;
@@ -22,6 +24,11 @@ public class FullScreenUI : MonoBehaviour
 
 	void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            Debug.Log("UI has no audio source");
+        }
         GameFlash();
         Invoke("GameStart", gameStartFlashDuration + 0.5f);
 	}
@@ -70,7 +77,12 @@ public class FullScreenUI : MonoBehaviour
         stretch = false;
         texture = gameOverScreen;
 		enabled = true;
-        Invoke("RestartLevel", 1.0f);
+        if (audioSource != null)
+        {
+            audioSource.clip = gameOverClip;
+            audioSource.Play();
+        }
+        Invoke("RestartLevel", 5.0f);
 	}
 
 	void GameWon()
@@ -78,7 +90,12 @@ public class FullScreenUI : MonoBehaviour
         stretch = false;
         texture = gameWonScreen;
 		enabled = true;
-        Invoke("RestartLevel", 1.0f);
+        if (audioSource != null)
+        {
+            audioSource.clip = gameWonClip;
+            audioSource.Play();
+        }
+        Invoke("RestartLevel", 5.0f);
 	}
 
     private void RestartLevel()

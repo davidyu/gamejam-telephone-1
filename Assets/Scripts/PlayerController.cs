@@ -8,8 +8,10 @@ public class PlayerController : MonoBehaviour
     public float bombCooldown = 0.2f;
     public GameObject bomb;
     public float bombExplosionRange = 1f;
+    public AudioClip placeBombClip;
     public LayerMask wallLayerMask;
 
+    private AudioSource audioSource;
     private Animator animatorMovement;
     private Rigidbody rb;
     private float cooldown;
@@ -19,6 +21,15 @@ public class PlayerController : MonoBehaviour
         if (bomb == null)
         {
             Debug.Log("bomb is null! Player cannot lay bombs");
+        }
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            Debug.Log("player has no audio source");
+        }
+        else
+        {
+            audioSource.clip = placeBombClip;
         }
     }
 
@@ -60,22 +71,18 @@ public class PlayerController : MonoBehaviour
 
     private void __UpdateAnimator(Vector3 moveDirection)
     {
-        if (animatorMovement != null)
-        {
-            animatorMovement.SetFloat("MoveX", Vector3.Dot(moveDirection, transform.right));
-            animatorMovement.SetFloat("MoveZ", Vector3.Dot(moveDirection, transform.forward));
-        }
+        animatorMovement?.SetFloat("MoveX", Vector3.Dot(moveDirection, transform.right));
+        animatorMovement?.SetFloat("MoveZ", Vector3.Dot(moveDirection, transform.forward));
     }
 
     private void __DropBomb()
     {
         cooldown = bombCooldown;
-        if (bomb != null)
-        {
-            Vector3 bombPosition = Vector3Int.RoundToInt(transform.position);
-            bombPosition.y = transform.position.y;
-            GameObject bombInstance = Instantiate(bomb, bombPosition, Quaternion.identity);
-            bombInstance.GetComponent<Bomb>().explosionRange = bombExplosionRange;
-        }
+        if (bomb == null) return;
+        audioSource?.Play();
+        Vector3 bombPosition = Vector3Int.RoundToInt(transform.position);
+        bombPosition.y = transform.position.y;
+        GameObject bombInstance = Instantiate(bomb, bombPosition, Quaternion.identity);
+        bombInstance.GetComponent<Bomb>().explosionRange = bombExplosionRange;
     }
 }

@@ -5,13 +5,14 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public float speed = 5.0f;
+    public AudioClip oinkClip;
+    public AudioClip squealClip;
 
     private Rigidbody rb;
     private enum State
     {
         IDLE,
         MOVING,
-
         COUNT, // always keep me last
     };
     private State state;
@@ -32,11 +33,15 @@ public class Enemy : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.CompareTag("Player"))
         {
-            // kill 'em!
-            Destroy(collision.gameObject, 0f);
+            Destroy(collision.gameObject, 0); // this kills the crab
         }
+    }
+
+    private void OnDestroy()
+    {
+        AudioSource.PlayClipAtPoint(squealClip, transform.position);
     }
 
     void Update()
@@ -44,6 +49,7 @@ public class Enemy : MonoBehaviour
         timeTillNextStateUpdate -= Time.deltaTime;
         if (timeTillNextStateUpdate < 0)
         {
+            AudioSource.PlayClipAtPoint(oinkClip, transform.position);
             state = (State)Random.Range(0, (int)State.COUNT);
             Vector3[] directions = {Vector3.forward, Vector3.right, Vector3.back, Vector3.left};
             direction = directions[Random.Range(0, directions.Length)];

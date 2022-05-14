@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -876546973899608171, guid: c043964aa9ff1bb4ea5ea0feb10a498a, type: 3}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -131,6 +131,9 @@ MonoBehaviour:
   explosionCountdown: 2
   explosionDuration: 0.2
   explosionRange: 1
+  smallExplosionClip: {fileID: 8300000, guid: 205f79f031cfb8541b3a22eedfba5d4d, type: 3}
+  bigExplosionClip: {fileID: 8300000, guid: 1d98421cfdcd38e4e962e7516c04c586, type: 3}
+  hugeExplosionClip: {fileID: 8300000, guid: e95404108e3bb1a48b4d655495a9b420, type: 3}
   explosionMask:
     serializedVersion: 2
     m_Bits: 64
