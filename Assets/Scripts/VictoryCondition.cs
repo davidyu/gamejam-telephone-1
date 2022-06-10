@@ -7,11 +7,17 @@ public class VictoryCondition : MonoBehaviour
     {
         if (collider.gameObject.tag == "Player")
         {
+            
             GameObject UI = GameObject.FindWithTag("UI");
             if (UI)
             {
                 UI.SendMessage("GameWon");
+
+               // yield return new WaitForSeconds(5);
+
+               
             }
+            FindObjectOfType<SceneLoader>().LoadNextScene();
         }
     }
 }
