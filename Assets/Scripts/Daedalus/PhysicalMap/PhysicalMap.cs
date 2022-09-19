@@ -13,30 +13,30 @@ abstract public class PhysicalMap<T> : PhysicalMap where T :PhysicalMapBehaviour
 
 	override protected void FinalizeGeneration(){
 		if (behaviour.enabledBatching) {
-			StaticBatchingUtility.Combine (this.staticMapGo);	
+			StaticBatchingUtility.Combine (this.staticMapGo);
 			hadCombined = true;
 		} else {
 			hadCombined = false;
 		}
 
 		UpdateOrientation();
-		
+
 		// Additional placements, will take care of orientation
 		if (behaviour.createPlayer) PlacePlayer();
         if (behaviour.createEntranceAndExit) PlaceEntranceAndExit();
 	}
-	
-	
+
+
 	protected void UpdateOrientation(){
 		if (behaviour.AutomaticOrientation) return;
-		
+
 		switch(behaviour.mapPlaneOrientation){
 		case MapPlaneOrientation.XY: this.rootMapGo.transform.localEulerAngles = new Vector3(-90,0,0); break;
 		case MapPlaneOrientation.XZ: break;
 		case MapPlaneOrientation.YZ: this.rootMapGo.transform.localEulerAngles = new Vector3(0,0,-90); break;
 		}
-	} 
-	
+	}
+
 
 	override protected void BuildRootGameObjects(){
 		rootMapGo = new GameObject("Map");
@@ -46,9 +46,9 @@ abstract public class PhysicalMap<T> : PhysicalMap where T :PhysicalMapBehaviour
 		this.dynamicMapTr = dynamicMapGo.transform;
 		staticMapGo = new GameObject("StaticMap");
 		staticMapGo.transform.parent = rootMapGo.transform;
-		this.staticMapTr = staticMapGo.transform;	
+		this.staticMapTr = staticMapGo.transform;
 	}
-	
+
 	private void PlacePlayer(){
         if (behaviour.createEntranceAndExit && behaviour.playerPrefab != null)
         {
@@ -58,22 +58,22 @@ abstract public class PhysicalMap<T> : PhysicalMap where T :PhysicalMapBehaviour
 			playerGo.name = "Player";
 		}
 	}
-	
+
 	protected void PlaceEntranceAndExit(){
 		GameObject entrancePrefab = behaviour.entrancePrefab;
 		GameObject entranceGo = Instantiate(entrancePrefab,Vector3.zero,Quaternion.identity) as GameObject;
 		entranceGo.transform.position = this.GetStartPosition();
 		entranceGo.transform.parent = this.staticMapTr;
 		entranceGo.name = "Entrance";
-		
+
 		GameObject exitPrefab = behaviour.exitPrefab;
 		GameObject exitGo = Instantiate(exitPrefab,Vector3.zero,Quaternion.identity) as GameObject;
 		exitGo.transform.position = this.GetEndPosition();
 		exitGo.transform.parent = this.staticMapTr;
 		exitGo.name = "Exit";
 	}
-	
-	
+
+
 	// Get the position of a cell starting_location in world coordinates, taking into account map orientation
 	public override Vector3 GetWorldPosition(CellLocation l, int storey = 0){
 		Vector3 pos = interpreter.GetWorldPosition(l,storey);
@@ -99,43 +99,43 @@ abstract public class PhysicalMap<T> : PhysicalMap where T :PhysicalMapBehaviour
         Vector3 pos = this.GetWorldPosition(l, storey);
         return pos;
     }
-	
-	
-	
-	
+
+
+
+
 }
 
-	
+
 [Serializable]
 abstract public class PhysicalMap : ScriptableObject{
-	
+
 	// Behaviour references, used during generation
 	[SerializeField]
 	protected GeneratorBehaviour generator;
-	
+
 	[SerializeField]
 	protected MapInterpreter interpreter;
-	
+
 	// Dictionary used for debug
-	[SerializeField]	
+	[SerializeField]
 	public CellTypeGameObjectListDict gameObjectLists;
 
 	// Dictionary used for zones
-	[SerializeField]	
+	[SerializeField]
 	public List<PhysicalMapZone> zones;
-	
+
 	[SerializeField]
 	public GameObject rootMapGo;
-	
+
 	[SerializeField]
 	public GameObject dynamicMapGo;
-	
+
 	[SerializeField]
 	public GameObject staticMapGo;
-	
+
 	[SerializeField]
 	public Transform staticMapTr;
-	
+
 	[SerializeField]
 	public Transform dynamicMapTr;
 
@@ -144,12 +144,12 @@ abstract public class PhysicalMap : ScriptableObject{
 	[SerializeField]
 	protected VirtualMap[] virtualMaps;
 
-	
+
 	public void Initialise(VirtualMap[] maps, GeneratorBehaviour g, MapInterpreter i){
 		virtualMaps = maps;
 		generator = g;
 		interpreter = i;
-		
+
 		gameObjectLists = CellTypeGameObjectListDict.Create();
 		foreach(VirtualCell.CellType ct in System.Enum.GetValues(typeof(VirtualCell.CellType)).Cast<VirtualCell.CellType>()){
 			gameObjectLists.Set(ct,new GameObjectList());
@@ -170,7 +170,7 @@ abstract public class PhysicalMap : ScriptableObject{
 			DestroyImmediate(staticMapGo.GetComponentInChildren<MeshFilter>().sharedMesh);
 		}
 	}
-		
+
 	abstract protected void BuildRootGameObjects();
 
 	public void Generate(){
@@ -183,20 +183,20 @@ abstract public class PhysicalMap : ScriptableObject{
 
 			EndGeneration();
 			FinalizeGeneration();
-		}	
+		}
 	}
-	
+
 	virtual protected void FinalizeGeneration(){
 	}
-	
+
 	// May be overriden
 	virtual protected bool StartGeneration(){
 		return true; // Always generate
 	}
 	virtual protected void EndGeneration(){
 	}
-	
-	
+
+
 	abstract public Vector3 GetStartPosition();
     abstract public Vector3 GetEndPosition();
     abstract public Vector3 GetWorldPosition(CellLocation l, int storey = 0);
@@ -205,22 +205,22 @@ abstract public class PhysicalMap : ScriptableObject{
 	protected CellLocation GetStartLocation(){
 		return this.virtualMaps[0].start;
 	}
-	
+
 	protected CellLocation GetEndLocation(){
 		return this.virtualMaps[this.virtualMaps.Length-1].end;
 	}
-	
+
 	virtual protected bool GetShallBuildRootGameObjects(){return true;}
-	
-	
+
+
 	// TODO: Instead pass a VirtualCell to CreateObject so we can extract cell type and the orientation as well
 	abstract public void CreateObject(VirtualMap map, MetricLocation l, VirtualCell.CellType cell_type, VirtualMap.DirectionType orientation);
-		
-	
+
+
 	public void AddToMapGameObject(VirtualCell.CellType cell_type, GameObject go){
 		this.AddToMapGameObject(cell_type,go,false);
 	}
-	
+
 	public void AddToMapGameObject(VirtualCell.CellType cell_type, GameObject go, bool dynamic, int zone = 0){	// TODO: extend zones, for now just used for the storeys
 		if (dynamic) go.transform.parent = dynamicMapTr;
 		else {
@@ -235,8 +235,8 @@ abstract public class PhysicalMap : ScriptableObject{
 		// Zone handling
 		zones[zone].AddObject(go);
 	}
-	
-	
+
+
 	/****************
 	 * Getters
 	 ****************/
@@ -255,8 +255,8 @@ abstract public class PhysicalMap : ScriptableObject{
         }
         return list;
     }
-	
-	
+
+
 	/// <summary>
 	/// Returns the GameObject at a certain world position, or null if none is found.
 	///	Note that this will return the topmost gameobject at that position, so if there is a wall above a floor, the wall will be returned.
@@ -274,7 +274,7 @@ abstract public class PhysicalMap : ScriptableObject{
 		}
 		return null;
 	}
-	
+
 	/// <summary>
 	/// Returns all the GameObjects of a chosen SelectionObjectType.
 	/// </summary>
@@ -294,11 +294,11 @@ abstract public class PhysicalMap : ScriptableObject{
 		}
 		return list;
 	}
-	
+
 	protected List<GameObject> GetObjectsOfType(VirtualCell.CellType cell_type){
 		return this.gameObjectLists.Get(cell_type);
 	}
-	
+
 	public List<Vector3> GetPositionsOfType(SelectionObjectType type){
 		List<GameObject> list = GetObjectsOfType(type);
 		List<Vector3> positions = new List<Vector3>();
@@ -306,7 +306,7 @@ abstract public class PhysicalMap : ScriptableObject{
 		return positions;
 	}
 
-	
+
 	/// <summary>
 	/// Returns all the GameObjects of a chosen zone. (i.e.: floor)
 	/// </summary>

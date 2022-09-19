@@ -93,9 +93,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4419095155287858715}
   - component: {fileID: 2976361969461576516}
+  - component: {fileID: 6408188306395592657}
   m_Layer: 0
   m_Name: Bomb
-  m_TagString: Untagged
+  m_TagString: Bomb
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -128,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c95066cf2f7366c4d96d91093ffa7434, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionCountdown: 2
+  explosionCountdown: 1.5
   explosionDuration: 0.2
   explosionRange: 1
   smallExplosionClip: {fileID: 8300000, guid: 205f79f031cfb8541b3a22eedfba5d4d, type: 3}
@@ -139,3 +140,19 @@ MonoBehaviour:
     m_Bits: 64
   explosion: {fileID: 6192724089161036641, guid: e17d9a3f04750764c8c0a7a0461e4c3b,
     type: 3}
+  _unitsLayer:
+    serializedVersion: 2
+    m_Bits: 8
+--- !u!65 &6408188306395592657
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4615263917227766355}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.09, y: 1, z: 2.8}
+  m_Center: {x: 0, y: 0, z: 0}

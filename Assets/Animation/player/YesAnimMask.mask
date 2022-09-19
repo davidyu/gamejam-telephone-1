@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: YesAnimMask
+  m_Mask: 00000000000000000000000000000000000000000000000001000000000000000100000000000000000000000000000000000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: player
+    m_Weight: 1
+  - m_Path: Root
+    m_Weight: 1
+  - m_Path: Root/Collar
+    m_Weight: 1
+  - m_Path: Root/Collar/L_Shoulder
+    m_Weight: 1
+  - m_Path: Root/Collar/L_Shoulder/L_Elbow
+    m_Weight: 1
+  - m_Path: Root/Collar/L_Shoulder/L_Elbow/L_Wrist
+    m_Weight: 1
+  - m_Path: Root/Collar/L_Shoulder/L_Elbow/L_Wrist/L_Hand
+    m_Weight: 1
+  - m_Path: Root/Collar/Neck
+    m_Weight: 1
+  - m_Path: Root/Collar/Neck/Head
+    m_Weight: 1
+  - m_Path: Root/Collar/R_Shoulder
+    m_Weight: 1
+  - m_Path: Root/Collar/R_Shoulder/R_Elbow
+    m_Weight: 1
+  - m_Path: Root/Collar/R_Shoulder/R_Elbow/R_Wrist
+    m_Weight: 1
+  - m_Path: Root/Collar/R_Shoulder/R_Elbow/R_Wrist/R_Hand
+    m_Weight: 1
+  - m_Path: Root/Hip
+    m_Weight: 1
+  - m_Path: Root/Hip/L_Leg
+    m_Weight: 1
+  - m_Path: Root/Hip/L_Leg/L_Knee
+    m_Weight: 1
+  - m_Path: Root/Hip/L_Leg/L_Knee/L_Ankle
+    m_Weight: 1
+  - m_Path: Root/Hip/L_Leg/L_Knee/L_Ankle/L_Foot
+    m_Weight: 1
+  - m_Path: Root/Hip/R_Leg
+    m_Weight: 1
+  - m_Path: Root/Hip/R_Leg/R_Knee
+    m_Weight: 1
+  - m_Path: Root/Hip/R_Leg/R_Knee/R_Ankle
+    m_Weight: 1
+  - m_Path: Root/Hip/R_Leg/R_Knee/R_Ankle/R_Foot
+    m_Weight: 1

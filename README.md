@@ -16,7 +16,10 @@
 7. To run the game, click on the play button in the center top bar of the Unity editor
 
 ## Tips
-- For code, it is advisable to focus on the top-level files in the Assets/Scripts folder, you may not have enough time to modify and/or debug the code in the Daedalus folder
+- For code, it is advisable to focus on the top-level files in the Assets/Scripts folder, you may not have enough time to modify and/or debug the code in the Daedalus folder.
+- For art, majority of the art assets are created as PREFABS. That means, any changes done to a prefab will have a global effect to the project. There are two locations where art prefabs exist.
+  1. Assets/Art/Daedalus/Isometric_3D/Prefabs: This is where most of the environment assets are located.
+  2. Assets/Prefabs: Where most other assets are located.
 - When in doubt, reach out to the folks who worked on iterations before you!
 
 Please make sure to update this README if you feel it would help the next person, and make sure to acknowledge any authors of assets you used in the credits section below.

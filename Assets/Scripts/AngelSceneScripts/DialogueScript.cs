@@ -15,6 +15,8 @@ public class DialogueScript : MonoBehaviour
     public Animator noButtonAnimator;
     public Animator whoButtonAnimator;
 
+    public GameObject _buttonContinue;
+
     private Queue<string> sentences;
 
     int Counter = 0;
@@ -22,6 +24,8 @@ public class DialogueScript : MonoBehaviour
     void Start ()
     {
         sentences = new Queue<string>();
+        _buttonContinue.GetComponent<Transform>();
+        _buttonContinue.SetActive(false);
     }
 
     public void StartDialogue (Dialogue dialogue)
@@ -44,7 +48,7 @@ public class DialogueScript : MonoBehaviour
         {
             sentences.Enqueue(sentence);
         }
-       
+
         DisplayNextSentence();
 
     }
@@ -56,8 +60,8 @@ public class DialogueScript : MonoBehaviour
             ImageAnimator.SetBool("ImageTransition", true);
             FindObjectOfType<AudioManager>().Play("ILoveYouJesus");
         }
-        
-        
+
+
         if(sentences.Count == 0)
         {
             if (Counter == 1)
@@ -66,7 +70,6 @@ public class DialogueScript : MonoBehaviour
             }
             Debug.Log("Count == 0");
             EndDialogue();
-
             return;
         }
 
@@ -89,14 +92,13 @@ public class DialogueScript : MonoBehaviour
     }
 
     void EndDialogue()
-    {   
-        
+    {
+
         Counter += 1;
         Debug.Log("End");
         animator.SetBool("IsOpen", false);
         if (Counter == 1)
         {
-            
             yesButtonAnimator.SetBool("ChoicesOpen", true);
             noButtonAnimator.SetBool("ChoicesOpen", true);
             whoButtonAnimator.SetBool("ChoicesOpen", true);
@@ -110,5 +112,14 @@ public class DialogueScript : MonoBehaviour
         }
 
         Debug.Log(Counter);
+    }
+
+    public void ShowContinueButton()
+    {
+      _buttonContinue.SetActive(true);
+    }
+    public void LoadNextScene()
+    {
+      FindObjectOfType<SceneLoader>().LoadNextScene();
     }
 }

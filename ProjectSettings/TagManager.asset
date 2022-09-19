@@ -6,6 +6,9 @@ TagManager:
   tags:
   - UI
   - Map
+  - Enemy
+  - Bomb
+  - ExitDefault
   layers:
   - Default
   - TransparentFX
@@ -16,8 +19,8 @@ TagManager:
   - Destructible
   - Indestructible
   - Player
-  - 
-  - 
+  - Distortion
+  - Boss
   - 
   - 
   - 
