@@ -32,7 +32,7 @@ public class Map : MonoBehaviour
         // always generate a random maze when we start the scene, instead of using a staticly generated maze
         generator.Generate();
         floorTiles = generator.physicalMap.GetObjectsOfType(SelectionObjectType.Floors);
-        // unfortuantely, Walls, CorridorWalls, etc don't work for this particular API
+        // Unfortunately, Walls, CorridorWalls, etc don't work for this particular API
         // so we are left to operate on Floors only - we have to manually figure out which tiles are floors and which are walls...
         SpawnEnemies();
         SpawnPowerups();
@@ -85,10 +85,10 @@ public class Map : MonoBehaviour
 
             GameObject randomPowerup = powerups[Random.Range(0, powerups.Length)];
             GameObject randomFloor = floors[Random.Range(0, floors.Count)];
-            while (floors.Count > 1 && generator.physicalMap.GetObjectAtPosition(randomFloor.transform.position) == randomFloor)
+            while (floors.Count > 1 && generator.physicalMap.GetObjectAtPosition(randomFloor.transform.position) != randomFloor)
             {
-                // this is a naked floor tile - pick a floor tile that has a wall over it!
-                floors.Remove(randomFloor); // this floor tile is naked, skip this floor in the future
+                // there is a wall above this floor tile - pick a floor tile that is actually walkable
+                floors.Remove(randomFloor); // this floor tile isn't walkable, skip this floor in the future
                 randomFloor = floors[Random.Range(0, floors.Count)];
             }
             Vector3 spawnPosition = randomFloor.transform.position;
@@ -112,18 +112,18 @@ public class Map : MonoBehaviour
                 break;
             }
 
-            GameObject npcsObj = npcs[i];
+            GameObject npcsObj = npcs[Random.Range( 0, npcs.Length )];
             GameObject randomFloor = floors[Random.Range(0, floors.Count)];
             while (floors.Count > 1 && generator.physicalMap.GetObjectAtPosition(randomFloor.transform.position) == randomFloor)
             {
-                // this is a naked floor tile - pick a floor tile that has a wall over it!
+                // this is a naked floor tile - pick a floor tile that has a wall over it! We do this because we don't want NPCs blocking our path
                 floors.Remove(randomFloor); // this floor tile is naked, skip this floor in the future
                 randomFloor = floors[Random.Range(0, floors.Count)];
             }
             Vector3 spawnPosition = randomFloor.transform.position;
             spawnPosition.y += 0.5f;
             Instantiate(npcsObj, spawnPosition, Quaternion.identity);
-            floors.Remove(randomFloor); // don't place another powerup here again
+            floors.Remove(randomFloor); // don't place another npc here again
         }
     }
     private void SpawnBoss()
@@ -141,18 +141,18 @@ public class Map : MonoBehaviour
                 break;
             }
 
-            GameObject bossObj = boss[i];
+            GameObject bossObj = boss[Random.Range( 0, boss.Length )];
             GameObject randomFloor = floors[Random.Range(0, floors.Count)];
-            while (floors.Count > 1 && generator.physicalMap.GetObjectAtPosition(randomFloor.transform.position) == randomFloor)
+            while (floors.Count > 1 && generator.physicalMap.GetObjectAtPosition(randomFloor.transform.position) != randomFloor)
             {
-                // this is a naked floor tile - pick a floor tile that has a wall over it!
-                floors.Remove(randomFloor); // this floor tile is naked, skip this floor in the future
+                // there is a wall above this floor tile - pick a floor tile that is actually walkable
+                floors.Remove(randomFloor); // this floor tile isn't walkable, skip this floor in the future
                 randomFloor = floors[Random.Range(0, floors.Count)];
             }
             Vector3 spawnPosition = randomFloor.transform.position;
             spawnPosition.y += 0.5f;
             Instantiate(bossObj, spawnPosition, Quaternion.identity);
-            floors.Remove(randomFloor); // don't place another powerup here again
+            floors.Remove(randomFloor); // don't place another boss here again
         }
     }
 }

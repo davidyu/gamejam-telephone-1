@@ -36,7 +36,7 @@ public class DialogueTrigger : MonoBehaviour {
 
   }
 	
-//Receives message on trigger collider box, to UI Dialogue to open dialogue, and sends message to Dilogue manager for text.
+//Receives message on trigger collider box, to UI Dialogue to open dialogue, and sends message to Dialogue manager for text.
   public void TriggerDialogue()
   {
 		_uiDialogue.ActivateNPCDialogue();

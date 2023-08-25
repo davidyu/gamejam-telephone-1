@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent( typeof( Rigidbody ) )]
 public class Boss : MonoBehaviour
 {
     public float speed = 5.0f;
@@ -17,7 +17,6 @@ public class Boss : MonoBehaviour
     public float bombExplosionRange = 1f;
     public AudioClip placeBombClip;
     public LayerMask wallLayerMask;
-    private AudioSource audioSource;
 
     [SerializeField]
     private int _points = 1;//value of enemy death.
@@ -59,69 +58,69 @@ public class Boss : MonoBehaviour
 
     void Start()
     {
-        _player = GameObject.Find("Player").GetComponent<PlayerController>();
-          if(_player == null)
-          {
-            Debug.LogError("Player is NULL");
-          }
-        _uiManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
-          if(_uiManager == null)
-          {
-            Debug.LogError("UI Manager is NULL");
-          }
+        _player = GameObject.Find( "Player" ).GetComponent<PlayerController>();
+        if ( _player == null )
+        {
+            Debug.LogError( "Player is NULL" );
+        }
+        _uiManager = GameObject.Find( "UI_Manager" ).GetComponent<UIManager>();
+        if ( _uiManager == null )
+        {
+            Debug.LogError( "UI Manager is NULL" );
+        }
         state = State.IDLE;
-        timeTillNextStateUpdate = Random.Range(0.5f, 2f);
+        timeTillNextStateUpdate = Random.Range( 0.5f, 2f );
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter( Collision collision )
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if ( collision.gameObject.CompareTag( "Player" ) )
         {
-            Destroy(collision.gameObject, 0); // this kills the crab
+            Destroy( collision.gameObject, 0 ); // this kills the crab
         }
     }
-    void OnTriggerEnter(Collider collider)
+    void OnTriggerEnter( Collider collider )
     {
-      if(collider.gameObject.tag == "Player")
-      {
-        playerInRadius = true;
-      }
+        if ( collider.gameObject.tag == "Player" )
+        {
+            playerInRadius = true;
+        }
     }
-    void OnTriggerExit(Collider collider)
+    void OnTriggerExit( Collider collider )
     {
-      if(collider.gameObject.tag == "Player")
-      {
-        playerInRadius = false;
-      }
+        if ( collider.gameObject.tag == "Player" )
+        {
+            playerInRadius = false;
+        }
     }
 
-    private void EnemyScore(int points)
+    private void EnemyScore( int points )
     {
-      _points += points;
-      _uiManager.UpdateEnemyScore(points);//tells HUD UI_Manager to update point system.
+        _points += points;
+        _uiManager.UpdateEnemyScore( points );//tells HUD UI_Manager to update point system.
     }
 
     private void OnDestroy()
     {
-        AudioSource.PlayClipAtPoint(squealClip, transform.position);
-        EnemyScore(_points);
+        AudioSource.PlayClipAtPoint( squealClip, transform.position );
+        EnemyScore( _points );
     }
 
     void Update()
     {
         cooldown -= Time.deltaTime;
         timeTillNextStateUpdate -= Time.deltaTime;
-        if (timeTillNextStateUpdate < 0)
+        if ( timeTillNextStateUpdate < 0 )
         {
-            AudioSource.PlayClipAtPoint(oinkClip, transform.position);
-            state = (State)Random.Range(0, (int)State.COUNT);
-            Vector3[] directions = {Vector3.forward, Vector3.right, Vector3.back, Vector3.left};
-            direction = directions[Random.Range(0, directions.Length)];
-            timeTillNextStateUpdate = Random.Range(0.5f, 2f);
+            AudioSource.PlayClipAtPoint( oinkClip, transform.position );
+            state = ( State )Random.Range( 0, ( int )State.COUNT );
+            Vector3[] directions = { Vector3.forward, Vector3.right, Vector3.back, Vector3.left };
+            direction = directions[Random.Range( 0, directions.Length )];
+            timeTillNextStateUpdate = Random.Range( 0.5f, 2f );
         }
 
 
-        switch (state)
+        switch ( state )
         {
             case State.IDLE:
                 break;
@@ -129,49 +128,48 @@ public class Boss : MonoBehaviour
                 rb.velocity = direction * speed;
                 break;
             case State.ATTACK:
-                if(cooldown <= 0)
+                if ( cooldown <= 0 )
                 {
-                  __DropBomb();
+                    DropBomb();
                 }
                 break;
         }
-//Rising attack
-        if(Input.GetKey(KeyCode.LeftShift) && playerInRadius == true)
+        //Rising attack
+        if ( _player.numEnergyBalls > 0 && Input.GetKey( KeyCode.LeftShift ) && playerInRadius == true )
         {
-          _buttonPressedTime += 10 * Time.deltaTime;
-          speed = 0.0f;
-          _animator.SetBool("isEnemyRaised", true);//enemy shakes in fear.
-          transform.Translate(Vector3.up * _speedEnemyRaised * Time.deltaTime);
-          if(_buttonPressedTime >= 15.0f)
-          {
-            //StartCoroutine(ActivateTeleDeathRoutine());
-            ActivateTeleDeath();
-          }
+            _buttonPressedTime += 10 * Time.deltaTime;
+            speed = 0.0f;
+            _animator.SetBool( "isEnemyRaised", true );//enemy shakes in fear.
+            transform.Translate( Vector3.up * _speedEnemyRaised * Time.deltaTime );
+            if ( _buttonPressedTime >= 15.0f )
+            {
+                //StartCoroutine(ActivateTeleDeathRoutine());
+                ActivateTeleDeath();
+            }
         }
         else
         {
-          speed = 5.0f;
+            speed = 5.0f;
         }
     }
-    private void ActivateTeleDeath()
+    public void ActivateTeleDeath()
     {
-      Destroy(this.gameObject);
-      OnDestroy();
-      Instantiate(_damageVFXPrefab, transform.position, Quaternion.identity);
+        Destroy( this.gameObject );
+        OnDestroy();
+        Instantiate( _damageVFXPrefab, transform.position, Quaternion.identity );
     }
     IEnumerator ActivateTeleDeathRoutine()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds( 1f );
         ActivateTeleDeath();
     }
-    private void __DropBomb()
+    private void DropBomb()
     {
         cooldown = bombCooldown;
-        if (bomb == null) return;
-        audioSource?.Play();
-        Vector3 bombPosition = Vector3Int.RoundToInt(transform.position);
+        if ( bomb == null ) return;
+        Vector3 bombPosition = Vector3Int.RoundToInt( transform.position );
         bombPosition.y = transform.position.y;
-        GameObject bombInstance = Instantiate(bomb, bombPosition, Quaternion.identity);
+        GameObject bombInstance = Instantiate( bomb, bombPosition, Quaternion.identity );
         bombInstance.GetComponent<BossBomb>().explosionRange = bombExplosionRange;
     }
 }

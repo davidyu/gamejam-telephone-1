@@ -7,30 +7,49 @@ public class UIManager : MonoBehaviour
 {
 
     [SerializeField]
-    private Text _powerText;
+    private Text _numBombsText;
     [SerializeField]
-    private Text _enemyText;
+    private Text _numEnergyballsText;
     [SerializeField]
-    private int _playerPowerScore;
+    private Text _numEnemiesText;
     [SerializeField]
-    private int _playerEnemyScore;
+    private Text _numPowerUpsText;
 
     // Start is called before the first frame update
     void Start()
     {
-      _powerText.text = "Powerups: " + 0;
-      _enemyText.text = "Enemies: " + 0;
+        _numPowerUpsText.text = "Powerups Taken: " + 0;
+        _numEnemiesText.text = "Enemies Killed: " + 0;
+        _numBombsText.text = "Bombs Remaining: " + 0;
+        _numEnergyballsText.text = "Energyballs: " + 0;
     }
 
-    public void UpdatePowerScore(int playerPowerScore)
+    public void UpdatePowerScore( int numPowerupsTaken )
     {
-      _powerText.text = "Powerups: " + playerPowerScore;
-      _playerPowerScore = playerPowerScore;
+        if ( _numPowerUpsText )
+        {
+            _numPowerUpsText.text = "Powerups Taken: " + numPowerupsTaken;
+        }
     }
-    public void UpdateEnemyScore(int playerEnemyScore)
+    public void UpdateEnemyScore( int numEnemiesKilled )
     {
-      _playerEnemyScore = playerEnemyScore;
-      _enemyText.text = "Enemies: " + playerEnemyScore;
-
+        if ( _numEnemiesText )
+        {
+            _numEnemiesText.text = "Enemies: " + numEnemiesKilled;
+        }
+    }
+    public void UpdateNumBombs( int numBombs )
+    {
+        if ( _numBombsText )
+        {
+            _numBombsText.text = "Bombs Remaining: " + numBombs;
+        }
+    }
+    public void UpdateNumEnergyballs( int numEnergyballs )
+    {
+        if ( _numEnergyballsText )
+        {
+            _numEnergyballsText.text = "Energyballs: " + numEnergyballs;
+        }
     }
 }

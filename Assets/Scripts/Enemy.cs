@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent( typeof( Rigidbody ) )]
 public class Enemy : MonoBehaviour
 {
     public float speed = 5.0f;
@@ -49,72 +49,72 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
-        _player = GameObject.Find("Player").GetComponent<PlayerController>();
-          if(_player == null)
-          {
-            Debug.LogError("Player is NULL");
-          }
-        _uiManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
-          if(_uiManager == null)
-          {
-            Debug.LogError("UI Manager is NULL");
-          }
+        _player = GameObject.Find( "Player" ).GetComponent<PlayerController>();
+        if ( _player == null )
+        {
+            Debug.LogError( "Player is NULL" );
+        }
+        _uiManager = GameObject.Find( "UI_Manager" ).GetComponent<UIManager>();
+        if ( _uiManager == null )
+        {
+            Debug.LogError( "UI Manager is NULL" );
+        }
         state = State.IDLE;
-        timeTillNextStateUpdate = Random.Range(0.5f, 2f);
+        timeTillNextStateUpdate = Random.Range( 0.5f, 2f );
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter( Collision collision )
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if ( collision.gameObject.CompareTag( "Player" ) )
         {
-            Destroy(collision.gameObject, 0); // this kills the crab
+            Destroy( collision.gameObject, 0 ); // this kills the crab
         }
     }
-    void OnTriggerEnter(Collider collider)
+    void OnTriggerEnter( Collider collider )
     {
-      if(collider.gameObject.tag == "Player")
-      {
-        playerInRadius = true;
-      }
-      //current hack to detect if enemies have been blown up. If enemy goes inside trigger, add point to player.
-      if(collider.gameObject.tag == "Bomb")
-      {
-        EnemyScore(_points);
-        Debug.Log("Added point");
-      }
+        if ( collider.gameObject.tag == "Player" )
+        {
+            playerInRadius = true;
+        }
+        //current hack to detect if enemies have been blown up. If enemy goes inside trigger, add point to player.
+        if ( collider.gameObject.tag == "Bomb" )
+        {
+            EnemyScore( _points );
+            Debug.Log( "Added point" );
+        }
     }
-    void OnTriggerExit(Collider collider)
+    void OnTriggerExit( Collider collider )
     {
-      if(collider.gameObject.tag == "Player")
-      {
-        playerInRadius = false;
-      }
+        if ( collider.gameObject.tag == "Player" )
+        {
+            playerInRadius = false;
+        }
     }
 
-    private void EnemyScore(int points)
+    private void EnemyScore( int points )
     {
-      //_points += points;
-      _player.AddEnemyScore(_points);//tells HUD UI_Manager to update point system.
+        //_points += points;
+        _player.AddEnemyScore( _points );//tells HUD UI_Manager to update point system.
     }
 
     private void OnDestroy()
     {
-      AudioSource.PlayClipAtPoint(squealClip, transform.position);
+        AudioSource.PlayClipAtPoint( squealClip, transform.position );
     }
 
     void Update()
     {
         timeTillNextStateUpdate -= Time.deltaTime;
-        if (timeTillNextStateUpdate < 0)
+        if ( timeTillNextStateUpdate < 0 )
         {
-            AudioSource.PlayClipAtPoint(oinkClip, transform.position);
-            state = (State)Random.Range(0, (int)State.COUNT);
-            Vector3[] directions = {Vector3.forward, Vector3.right, Vector3.back, Vector3.left};
-            direction = directions[Random.Range(0, directions.Length)];
-            timeTillNextStateUpdate = Random.Range(0.5f, 2f);
+            AudioSource.PlayClipAtPoint( oinkClip, transform.position );
+            state = ( State )Random.Range( 0, ( int )State.COUNT );
+            Vector3[] directions = { Vector3.forward, Vector3.right, Vector3.back, Vector3.left };
+            direction = directions[Random.Range( 0, directions.Length )];
+            timeTillNextStateUpdate = Random.Range( 0.5f, 2f );
         }
 
-        switch (state)
+        switch ( state )
         {
             case State.IDLE:
                 break;
@@ -123,37 +123,37 @@ public class Enemy : MonoBehaviour
                 break;
         }
         //Rising attack
-        if(Input.GetKey(KeyCode.LeftShift) && playerInRadius == true)
+        if ( _player.numEnergyBalls > 0 && Input.GetKey( KeyCode.LeftShift ) && playerInRadius == true )
         {
-          _buttonPressedTime += 10 * Time.deltaTime;
-          speed = 0.0f;
-          _animator.SetBool("isEnemyRaised", true);//enemy shakes in fear.
-          transform.Translate(Vector3.up * _speedEnemyRaised * Time.deltaTime);
-          if(_buttonPressedTime >= 15.0f)
-          {
-            //StartCoroutine(ActivateTeleDeathRoutine());
-            ActivateTeleDeath();
-          }
+            _buttonPressedTime += 10 * Time.deltaTime;
+            speed = 0.0f;
+            _animator.SetBool( "isEnemyRaised", true );//enemy shakes in fear.
+            transform.Translate( Vector3.up * _speedEnemyRaised * Time.deltaTime );
+            if ( _buttonPressedTime >= 30.0f )
+            {
+                //StartCoroutine(ActivateTeleDeathRoutine());
+                ActivateTeleDeath();
+            }
         }
         else
         {
-          speed = 5.0f;
+            speed = 5.0f;
         }
     }
     public void ActivateBombDeath()
     {
-      EnemyScore(_points);
+        EnemyScore( _points );
     }
-    private void ActivateTeleDeath()
+    public void ActivateTeleDeath()
     {
-      Destroy(this.gameObject);
-      EnemyScore(_points);
-      OnDestroy();
-      Instantiate(_damageVFXPrefab, transform.position, Quaternion.identity);
+        Destroy( this.gameObject );
+        EnemyScore( _points );
+        OnDestroy();
+        Instantiate( _damageVFXPrefab, transform.position, Quaternion.identity );
     }
     IEnumerator ActivateTeleDeathRoutine()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds( 1f );
         ActivateTeleDeath();
     }
 }

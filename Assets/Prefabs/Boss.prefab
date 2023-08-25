@@ -78,8 +78,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.73, y: 2.54, z: 2.35}
-  m_Center: {x: 0, y: 0.87, z: 0}
+  m_Size: {x: 1, y: 3, z: 2.15}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!114 &1054614913893590837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96,13 +96,13 @@ MonoBehaviour:
   rotationSpeed: 5
   oinkClip: {fileID: 8300000, guid: 572c44f1b468d2840bd4405640a1136d, type: 3}
   squealClip: {fileID: 8300000, guid: 0cc3dd1cf7b5e5548a4301e318fdeb95, type: 3}
-  bombCooldown: 2
+  bombCooldown: 5
   bomb: {fileID: 4615263917227766355, guid: e8ab9dd1035119543a193e0af852c54e, type: 3}
-  bombExplosionRange: 5
+  bombExplosionRange: 3
   placeBombClip: {fileID: 8300000, guid: f01a09d2396248f49b53c3aea091143f, type: 3}
   wallLayerMask:
     serializedVersion: 2
-    m_Bits: 192
+    m_Bits: 64
   _points: 20
   _buttonPressedTime: 0
   playerInRadius: 0

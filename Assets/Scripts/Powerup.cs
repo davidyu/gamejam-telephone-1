@@ -35,11 +35,34 @@ public class Powerup : MonoBehaviour
 
     void OnTriggerEnter(Collider collider)
     {
-
         if (collider.gameObject.tag == "Player")
         {
-            // do something to power them up!
-            collider.gameObject.GetComponent<PlayerController>().bombExplosionRange++;
+            PlayerController controller = collider.gameObject.GetComponent<PlayerController>();
+            if( controller )
+            {
+                // do something to power them up!
+                int index = Random.Range( 0, 2 );
+                switch ( index )
+                {
+                    case 0:
+                        {
+                            controller.bombExplosionRange++;
+                            
+                            break;
+                        }
+                    case 1:
+                        {
+                            controller.AddBombs( 1 );
+                            break;
+                        }
+                    case 2:
+                        {
+                            controller.AddEnergyballs( 1 );
+                            break;
+                        }
+                }
+            }
+    
             PowerScore(_points);
             AudioSource.PlayClipAtPoint(powerupClip, transform.position);
             Destroy(gameObject, 0f);
